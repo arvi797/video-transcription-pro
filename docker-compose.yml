@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # CPU-only variant for general use
+  video-transcription-cpu:
+    build:
+      context: .
+      target: cpu
+    image: video-transcription-pro:cpu
+    container_name: video-transcription-cpu
+    volumes:
+      - ./videos:/app/videos:ro
+      - ./transcripts:/app/transcripts
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: --help
+    profiles: ["cpu"]
+
+  # GPU-accelerated variant for maximum performance
+  video-transcription-gpu:
+    build:
+      context: .
+      target: gpu
+    image: video-transcription-pro:gpu
+    container_name: video-transcription-gpu
+    volumes:
+      - ./videos:/app/videos:ro
+      - ./transcripts:/app/transcripts
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: --help
+    profiles: ["gpu"]
+
+  # Batch processing service
+  batch-processor:
+    build:
+      context: .
+      target: production
+    image: video-transcription-pro:latest
+    container_name: video-transcription-batch
+    volumes:
+      - ./videos:/app/videos:ro
+      - ./batch_transcripts:/app/transcripts
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: [
+      "--batch", "/app/videos",
+      "-o", "/app/transcripts",
+      "--workers", "2",
+      "--recursive"
+    ]
+    profiles: ["batch"]
+
+volumes:
+  transcripts:
+    driver: local
+  config:
+    driver: local
+
+networks:
+  default:
+    name: video-transcription-network

@@ -1,0 +1,41 @@
+# CPU-only Docker image for Video Transcription Pro
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set environment variables
+ENV PYTHONPATH=/app/src
+ENV PYTHONUNBUFFERED=1
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+COPY setup.py .
+COPY pyproject.toml .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy source code
+COPY src/ src/
+COPY test_docker.py .
+
+# Install the package
+RUN pip install -e .
+
+# Create directories for input/output
+RUN mkdir -p /app/videos /app/transcripts
+
+# Test the installation
+RUN python test_docker.py
+
+# Set default command
+ENTRYPOINT ["video-transcribe"]
+CMD ["--help"]

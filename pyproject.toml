@@ -1,0 +1,225 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "video-transcription-pro"
+version = "1.0.0"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"},
+]
+description = "Professional video transcription with GPU-accelerated Whisper and speaker diarization"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = [
+    "video transcription",
+    "speech recognition", 
+    "speaker diarization",
+    "whisper",
+    "pyannote",
+    "gpu acceleration",
+    "audio processing",
+    "machine learning",
+    "ai",
+    "nlp"
+]
+dependencies = [
+    "torch>=1.9.0",
+    "openai-whisper>=20231117",
+    "librosa>=0.9.0",
+    "numpy>=1.21.0",
+    "scipy>=1.7.0",
+    "soundfile>=0.10.0",
+    "tqdm>=4.62.0",
+    "ffmpeg-python>=0.2.0",
+]
+
+[project.optional-dependencies]
+gpu = [
+    "torch>=1.9.0",
+    "torchaudio>=0.9.0",
+]
+pyannote = [
+    "pyannote.audio>=3.1.0",
+    "huggingface_hub>=0.16.0",
+]
+all = [
+    "torch>=1.9.0",
+    "torchaudio>=0.9.0", 
+    "pyannote.audio>=3.1.0",
+    "huggingface_hub>=0.16.0",
+    "matplotlib>=3.5.0",
+    "seaborn>=0.11.0",
+]
+dev = [
+    "pytest>=6.0.0",
+    "pytest-cov>=2.12.0",
+    "black>=21.0.0",
+    "flake8>=3.9.0",
+    "mypy>=0.910",
+    "pre-commit>=2.15.0",
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=0.5.0",
+    "twine>=3.4.0",
+    "build>=0.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/video-transcription-pro"
+Documentation = "https://video-transcription-pro.readthedocs.io/"
+Repository = "https://github.com/yourusername/video-transcription-pro.git"
+"Bug Tracker" = "https://github.com/yourusername/video-transcription-pro/issues"
+
+[project.scripts]
+video-transcribe = "video_transcription.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+video_transcription = ["*.txt", "*.md"]
+
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# Flake8 configuration
+[tool.flake8]
+max-line-length = 88
+extend-ignore = "E203,W503"
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".eggs",
+    "*.egg-info",
+    ".venv",
+    ".tox"
+]
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "whisper",
+    "whisper.*",
+    "pyannote.*",
+    "librosa",
+    "librosa.*",
+    "soundfile",
+    "torch.*",
+    "scipy.*",
+    "matplotlib.*",
+    "seaborn.*"
+]
+ignore_missing_imports = true
+
+# Pytest configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--disable-warnings",
+    "--cov=video_transcription",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=80"
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "gpu: marks tests that require GPU"
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["src/video_transcription"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/.*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+# Isort configuration
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["video_transcription"]
+known_third_party = [
+    "torch",
+    "whisper", 
+    "pyannote",
+    "librosa",
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "pytest"
+]
