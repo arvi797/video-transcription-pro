@@ -256,15 +256,116 @@ class VideoTranscriptionPipeline:
             num_speakers=self.num_speakers,
             method=self.speaker_method
         )
-        
+
         # Use same output generation logic as process_video
         return self._generate_outputs(
-            speaker_result, 
-            whisper_result, 
-            audio_path, 
-            output_dir, 
-            output_formats
+            speaker_result,
+            whisper_result,
+            audio_path,
+            output_dir,
+            output_formats,
         )
+
+    def _generate_outputs(
+        self,
+        speaker_result: Dict,
+        whisper_result: Dict,
+        audio_path: Union[str, Path],
+        output_dir: Optional[Union[str, Path]] = None,
+        output_formats: Optional[List[str]] = None,
+    ) -> Dict:
+        """Generate output files and summary information.
+
+        This helper is shared by ``process_video`` and ``process_audio``
+        to avoid duplicating the logic for creating transcript files and
+        assembling the result dictionary.
+
+        Args:
+            speaker_result: Speaker identification output.
+            whisper_result: Raw Whisper transcription result.
+            audio_path: Path to the processed audio file.
+            output_dir: Directory to write output files to.
+            output_formats: List of desired output formats.
+
+        Returns:
+            Dictionary containing processing results and output file paths.
+        """
+
+        audio_path = Path(audio_path)
+        if output_dir is None:
+            output_dir = audio_path.parent / "transcripts"
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        if output_formats is None:
+            output_formats = ["txt", "json"]
+
+        output_files: Dict[str, str] = {}
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        base_name = f"{audio_path.stem}_transcript_{timestamp}"
+
+        for format_type in output_formats:
+            if format_type == "txt":
+                txt_path = output_dir / f"{base_name}.txt"
+                self.formatter.save_transcript(
+                    speaker_result,
+                    txt_path,
+                    speaker_names=self.speaker_names,
+                    format_style="readable",
+                )
+                output_files["txt"] = str(txt_path)
+
+            elif format_type == "json":
+                json_path = output_dir / f"{base_name}.json"
+                export_data = {
+                    "audio_path": str(audio_path),
+                    "whisper_result": whisper_result,
+                    "speaker_result": speaker_result,
+                    "speaker_names": self.speaker_names,
+                    "pipeline_config": {
+                        "whisper_model": self.whisper_model,
+                        "device": self.transcriber.device,
+                        "speaker_method": speaker_result.get("method"),
+                        "num_speakers": self.num_speakers,
+                    },
+                    "processing_metadata": {
+                        "timestamp": timestamp,
+                        "pipeline_version": "1.0.0",
+                    },
+                }
+
+                with open(json_path, "w", encoding="utf-8") as f:
+                    json.dump(export_data, f, indent=2, ensure_ascii=False)
+                output_files["json"] = str(json_path)
+
+            elif format_type == "srt":
+                srt_path = output_dir / f"{base_name}.srt"
+                self.formatter.save_srt(
+                    speaker_result, srt_path, speaker_names=self.speaker_names
+                )
+                output_files["srt"] = str(srt_path)
+
+        segments = speaker_result.get("segments", [])
+        total_duration = segments[-1]["end"] if segments else 0
+
+        return {
+            "success": True,
+            "audio_path": str(audio_path),
+            "output_files": output_files,
+            "summary": {
+                "duration_minutes": total_duration / 60,
+                "num_segments": len(segments),
+                "num_speakers": speaker_result.get("num_speakers", 0),
+                "method": speaker_result.get("method", "unknown"),
+                "accuracy": speaker_result.get("accuracy_score", 0),
+                "confidence": speaker_result.get("confidence", "unknown"),
+                "processing_time": speaker_result.get("processing_time", 0),
+            },
+            "speaker_stats": self.formatter._calculate_speaker_stats(
+                speaker_result
+            ),
+        }
     
     def get_info(self) -> Dict:
         """
