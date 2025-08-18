@@ -53,7 +53,7 @@ jobs:
     
     - name: Test with pytest
       run: |
-        pytest tests/ -v --cov=video_transcription --cov-report=xml --cov-report=term
+        pytest tests/ -v --cov=video_transcription --cov-report=xml --cov-report=term --cov-fail-under=30
     
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.9'
@@ -98,7 +98,7 @@ jobs:
     
     - name: Test with pytest
       run: |
-        pytest tests/ -v --cov=video_transcription --cov-report=term
+        pytest tests/ -v --cov=video_transcription --cov-report=term --cov-fail-under=30
 
   security:
     runs-on: ubuntu-latest
