@@ -13,15 +13,15 @@ from .pipeline import VideoTranscriptionPipeline
 class BatchProcessor:
     """
     Batch processing for multiple video files.
-    
+
     This class enables efficient processing of multiple video files with
     parallel processing capabilities and comprehensive progress tracking.
-    
+
     Attributes:
         pipeline: VideoTranscriptionPipeline instance
         max_workers: Maximum number of parallel workers
         supported_extensions: Supported video/audio file extensions
-    
+
     Example:
         >>> processor = BatchProcessor(
         ...     whisper_model="large-v3",
@@ -43,7 +43,7 @@ class BatchProcessor:
     ):
         """
         Initialize the batch processor.
-        
+
         Args:
             whisper_model: Whisper model name
             device: Computing device ('cuda', 'cpu', or None)
@@ -93,17 +93,17 @@ class BatchProcessor:
     ) -> List[Dict]:
         """
         Process all video/audio files in a folder.
-        
+
         Args:
             input_folder: Path to folder containing media files
             output_folder: Path to folder for output files
             recursive: Whether to search subfolders recursively
             filter_extensions: Specific extensions to process (optional)
             parallel: Whether to use parallel processing
-            
+
         Returns:
             List of processing results for each file
-            
+
         Raises:
             FileNotFoundError: If input folder doesn't exist
         """
@@ -164,12 +164,12 @@ class BatchProcessor:
     ) -> List[Dict]:
         """
         Process a specific list of files.
-        
+
         Args:
             file_paths: List of file paths to process
             output_folder: Path to folder for output files
             parallel: Whether to use parallel processing
-            
+
         Returns:
             List of processing results for each file
         """
@@ -377,7 +377,7 @@ class BatchProcessor:
     def get_info(self) -> Dict:
         """
         Get batch processor configuration information.
-        
+
         Returns:
             Dictionary with batch processor configuration
         """

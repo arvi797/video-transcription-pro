@@ -7,19 +7,21 @@ from pathlib import Path
 
 # Read README file
 this_directory = Path(__file__).parent
-long_description = (this_directory / "README.md").read_text(encoding='utf-8')
+long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 # Read version from __init__.py
 import re
 
+
 def get_version():
-    with open("src/video_transcription/__init__.py", "r", encoding='utf-8') as f:
+    with open("src/video_transcription/__init__.py", "r", encoding="utf-8") as f:
         content = f.read()
         version_match = re.search(r'__version__ = [\'"]([^\'"]*)[\'"]', content)
         author_match = re.search(r'__author__ = [\'"]([^\'"]*)[\'"]', content)
         if version_match and author_match:
             return version_match.group(1), author_match.group(1)
         raise RuntimeError("Unable to find version/author string.")
+
 
 version, author = get_version()
 
@@ -78,7 +80,7 @@ setup(
         ],
         "all": [
             "torch>=1.9.0",
-            "torchaudio>=0.9.0", 
+            "torchaudio>=0.9.0",
             "pyannote.audio>=3.1.0",
             "huggingface_hub>=0.16.0",
             "matplotlib>=3.5.0",
@@ -95,7 +97,7 @@ setup(
             "sphinx-rtd-theme>=0.5.0",
             "twine>=3.4.0",
             "build>=0.7.0",
-        ]
+        ],
     },
     entry_points={
         "console_scripts": [
@@ -108,7 +110,7 @@ setup(
     },
     keywords=[
         "video transcription",
-        "speech recognition", 
+        "speech recognition",
         "speaker diarization",
         "whisper",
         "pyannote",
@@ -116,7 +118,7 @@ setup(
         "audio processing",
         "machine learning",
         "ai",
-        "nlp"
+        "nlp",
     ],
     zip_safe=False,
 )

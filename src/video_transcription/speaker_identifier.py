@@ -15,15 +15,15 @@ warnings.filterwarnings("ignore")
 class SpeakerIdentifier:
     """
     Multi-method speaker identification with state-of-the-art accuracy.
-    
+
     This class provides speaker diarization using PyAnnote Audio for 95%+ accuracy
     with GPU acceleration, and falls back to audio clustering methods when needed.
-    
+
     Attributes:
         methods_available (dict): Available speaker identification methods
         pyannote_pipeline: Loaded PyAnnote pipeline (if available)
         pyannote_device: Device used for PyAnnote processing
-    
+
     Example:
         >>> identifier = SpeakerIdentifier()
         >>> result = identifier.identify_speakers(audio_path, whisper_result)
@@ -33,7 +33,7 @@ class SpeakerIdentifier:
     def __init__(self, auth_token: Optional[str] = None):
         """
         Initialize the speaker identifier.
-        
+
         Args:
             auth_token: HuggingFace authentication token for PyAnnote models
         """
@@ -60,7 +60,7 @@ class SpeakerIdentifier:
     def _check_pyannote(self) -> bool:
         """
         Check if PyAnnote is available and authenticated with GPU support.
-        
+
         Returns:
             True if PyAnnote is available and configured
         """
@@ -113,13 +113,13 @@ class SpeakerIdentifier:
     ) -> Dict:
         """
         Identify speakers using the best available method.
-        
+
         Args:
             audio_path: Path to audio file
             whisper_result: Result from Whisper transcription
             num_speakers: Expected number of speakers (optional)
             method: Force specific method ('pyannote' or 'audio_clustering')
-            
+
         Returns:
             Dictionary containing speaker-identified segments and metadata
         """
@@ -153,12 +153,12 @@ class SpeakerIdentifier:
     ) -> Dict:
         """
         GPU-accelerated PyAnnote Audio speaker diarization (95%+ accuracy).
-        
+
         Args:
             audio_path: Path to audio file
             whisper_result: Result from Whisper transcription
             num_speakers: Expected number of speakers
-            
+
         Returns:
             Dictionary containing speaker-identified segments with high accuracy
         """
@@ -237,12 +237,12 @@ class SpeakerIdentifier:
     ) -> Dict:
         """
         Audio feature clustering fallback method (70% accuracy).
-        
+
         Args:
             audio_path: Path to audio file
             whisper_result: Result from Whisper transcription
             num_speakers: Expected number of speakers
-            
+
         Returns:
             Dictionary containing speaker-identified segments with medium accuracy
         """
@@ -308,15 +308,15 @@ class SpeakerIdentifier:
     def get_info(self) -> Dict:
         """
         Get speaker identifier configuration information.
-        
+
         Returns:
             Dictionary with speaker identifier configuration
         """
         return {
             "methods_available": self.methods_available,
             "pyannote_available": self.methods_available.get("pyannote", False),
-            "pyannote_device": str(self.pyannote_device)
-            if self.pyannote_device
-            else None,
+            "pyannote_device": (
+                str(self.pyannote_device) if self.pyannote_device else None
+            ),
             "gpu_available": torch.cuda.is_available(),
         }

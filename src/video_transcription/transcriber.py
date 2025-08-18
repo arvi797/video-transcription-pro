@@ -16,15 +16,15 @@ warnings.filterwarnings("ignore")
 class VideoTranscriber:
     """
     High-accuracy video transcription with GPU acceleration.
-    
+
     This class provides professional-grade video transcription using OpenAI Whisper
     with optimized settings for accuracy and performance.
-    
+
     Attributes:
         device (str): Computing device ('cuda' or 'cpu')
         model_name (str): Whisper model name
         model: Loaded Whisper model instance
-    
+
     Example:
         >>> transcriber = VideoTranscriber(model="large-v3", device="cuda")
         >>> audio_path = transcriber.extract_audio("video.mp4")
@@ -35,7 +35,7 @@ class VideoTranscriber:
     def __init__(self, model: str = "large-v3", device: Optional[str] = None):
         """
         Initialize the video transcriber.
-        
+
         Args:
             model: Whisper model name ('tiny', 'base', 'small', 'medium', 'large', 'large-v2', 'large-v3')
             device: Computing device ('cuda', 'cpu', or None for auto-detection)
@@ -67,7 +67,7 @@ class VideoTranscriber:
     def load_model(self) -> whisper.Whisper:
         """
         Load the Whisper model if not already loaded.
-        
+
         Returns:
             Loaded Whisper model instance
         """
@@ -82,14 +82,14 @@ class VideoTranscriber:
     ) -> str:
         """
         Extract and optimize audio from video file.
-        
+
         Args:
             video_path: Path to input video file
             output_path: Path for output audio file (optional)
-            
+
         Returns:
             Path to extracted audio file
-            
+
         Raises:
             FileNotFoundError: If video file doesn't exist
             subprocess.CalledProcessError: If FFmpeg extraction fails
@@ -136,14 +136,14 @@ class VideoTranscriber:
     def transcribe(self, audio_path: Union[str, Path], **kwargs) -> Dict:
         """
         Transcribe audio with word-level timestamps.
-        
+
         Args:
             audio_path: Path to audio file
             **kwargs: Additional options for Whisper transcription
-            
+
         Returns:
             Dictionary containing transcription results with segments and metadata
-            
+
         Raises:
             FileNotFoundError: If audio file doesn't exist
         """
@@ -195,7 +195,7 @@ class VideoTranscriber:
     def get_info(self) -> Dict:
         """
         Get transcriber configuration information.
-        
+
         Returns:
             Dictionary with transcriber configuration
         """
@@ -203,8 +203,8 @@ class VideoTranscriber:
             "model": self.model_name,
             "device": self.device,
             "gpu_available": torch.cuda.is_available(),
-            "gpu_name": torch.cuda.get_device_name(0)
-            if torch.cuda.is_available()
-            else None,
+            "gpu_name": (
+                torch.cuda.get_device_name(0) if torch.cuda.is_available() else None
+            ),
             "model_loaded": self.model is not None,
         }
