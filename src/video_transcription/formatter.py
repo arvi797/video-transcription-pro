@@ -11,10 +11,10 @@ from datetime import datetime
 class TranscriptFormatter:
     """
     Professional transcript formatting and export.
-    
+
     This class provides multiple output formats for transcription results,
     including human-readable transcripts, structured JSON, and subtitle formats.
-    
+
     Example:
         >>> formatter = TranscriptFormatter()
         >>> transcript = formatter.format_transcript(result, include_timestamps=True)
@@ -34,13 +34,13 @@ class TranscriptFormatter:
     ) -> str:
         """
         Format transcript for readability.
-        
+
         Args:
             result: Speaker identification result dictionary
             include_timestamps: Whether to include timestamps
             speaker_names: Custom mapping of speaker IDs to names
             format_style: Format style ('readable', 'compact', 'detailed')
-            
+
         Returns:
             Formatted transcript string
         """
@@ -185,14 +185,14 @@ class TranscriptFormatter:
     ) -> str:
         """
         Save formatted transcript to file.
-        
+
         Args:
             result: Speaker identification result dictionary
             output_path: Path for output file
             speaker_names: Custom mapping of speaker IDs to names
             format_style: Format style ('readable', 'compact', 'detailed')
             include_timestamps: Whether to include timestamps
-            
+
         Returns:
             Path to saved file
         """
@@ -217,12 +217,12 @@ class TranscriptFormatter:
     ) -> str:
         """
         Save results as structured JSON.
-        
+
         Args:
             result: Speaker identification result dictionary
             output_path: Path for output JSON file
             include_metadata: Whether to include processing metadata
-            
+
         Returns:
             Path to saved JSON file
         """
@@ -264,12 +264,12 @@ class TranscriptFormatter:
     ) -> str:
         """
         Save as SRT subtitle format.
-        
+
         Args:
             result: Speaker identification result dictionary
             output_path: Path for output SRT file
             speaker_names: Custom mapping of speaker IDs to names
-            
+
         Returns:
             Path to saved SRT file
         """

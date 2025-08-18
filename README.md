@@ -21,81 +21,81 @@ Professional-grade video transcription with **GPU-accelerated Whisper** and **st
 
 ## 📦 Installation
 
-### Quick Install
+### 🐳 Docker (Recommended - Works Everywhere)
 ```bash
-pip install video-transcription-pro
+# CPU version (works on all platforms)
+docker pull videotranscriptionpro/video-transcription-pro:latest-cpu
+docker run --rm -v "$(pwd):/app" videotranscriptionpro/video-transcription-pro:latest-cpu your_video.mp4
+
+# GPU version (Linux/Windows WSL2)
+docker pull videotranscriptionpro/video-transcription-pro:latest-gpu
+docker run --rm --gpus all -v "$(pwd):/app" videotranscriptionpro/video-transcription-pro:latest-gpu your_video.mp4
 ```
 
-### GPU Support (Recommended)
+### 🚀 Modern Install with uv (Recommended for Development)
 ```bash
-# For CUDA support
+# Install uv
+pip install uv
+
+# Install with GPU support (automatic CUDA detection)
+uv pip install video-transcription-pro[gpu]
+
+# Or install in a virtual environment
+uv venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+uv pip install video-transcription-pro[gpu]
+```
+
+### 📦 Traditional pip Install
+```bash
+# CPU only
+pip install video-transcription-pro
+
+# With GPU support
 pip install video-transcription-pro[gpu]
 
-# For complete installation with all dependencies
+# Complete installation
 pip install video-transcription-pro[all]
 ```
 
-### Development Install
+### 🔧 Platform-Specific Setup
+- **[Windows](INSTALL.md#-windows-installation)** - Conda recommended
+- **[Linux](INSTALL.md#-linux-installation)** - Native pip works well
+- **[macOS](INSTALL.md#-macos-installation)** - Similar to Linux
+- **[Docker](DOCKER.md)** - Cross-platform solution
+
+## 🐳 Docker Usage (Simplified)
+
+### Quick Start
 ```bash
-git clone https://github.com/yourusername/video-transcription-pro.git
-cd video-transcription-pro
-pip install -e .[dev]
+# CPU version (works everywhere)
+docker run --rm -v "$(pwd):/app" videotranscriptionpro/video-transcription-pro:latest-cpu your_video.mp4
+
+# GPU version (Linux/Windows WSL2)
+docker run --rm --gpus all -v "$(pwd):/app" videotranscriptionpro/video-transcription-pro:latest-gpu your_video.mp4
 ```
 
-## 🐳 Docker Support (Cross-Platform)
-
-Docker provides the easiest way to get started across Windows, Linux, and macOS without dealing with dependencies:
-
-### Quick Docker Usage
-
+### Advanced Usage
 ```bash
-# Pull the image (CPU version - works everywhere)
-docker pull videotranscriptionpro/video-transcription-pro:latest-cpu
-
-# Transcribe a video
+# With custom output directory
 docker run --rm \
   -v "$(pwd)/videos:/app/videos:ro" \
   -v "$(pwd)/transcripts:/app/transcripts" \
   videotranscriptionpro/video-transcription-pro:latest-cpu \
   /app/videos/your_video.mp4 -o /app/transcripts
+
+# With specific model
+docker run --rm -v "$(pwd):/app" videotranscriptionpro/video-transcription-pro:latest-cpu your_video.mp4 --model large-v3
 ```
 
-### Platform-Specific Examples
-
-**Windows PowerShell:**
-```powershell
-docker run --rm `
-  -v "${PWD}/videos:/app/videos:ro" -v "${PWD}/transcripts:/app/transcripts" `
-  videotranscriptionpro/video-transcription-pro:latest-cpu `
-  /app/videos/your_video.mp4 -o /app/transcripts
-```
-
-**GPU Acceleration (Linux/Windows WSL2):**
+### Docker Compose
 ```bash
-# Pull GPU-optimized image
-docker pull videotranscriptionpro/video-transcription-pro:latest-gpu
-
-# Run with GPU support
-docker run --rm --gpus all \
-  -v "$(pwd)/videos:/app/videos:ro" \
-  -v "$(pwd)/transcripts:/app/transcripts" \
-  videotranscriptionpro/video-transcription-pro:latest-gpu \
-  /app/videos/your_video.mp4 -o /app/transcripts --device cuda
-```
-
-**Docker Compose (Recommended):**
-```bash
-# Download docker-compose.yml
+# Download and run
 curl -O https://raw.githubusercontent.com/yourusername/video-transcription-pro/main/docker-compose.yml
-
-# Run CPU version
 docker-compose --profile cpu up video-transcription-cpu
-
-# Run GPU version
-docker-compose --profile gpu up video-transcription-gpu
 ```
 
-📖 **[Complete Docker Usage Guide](docs/docker-usage.md)** - Detailed instructions for all platforms and use cases.
+📖 **[Complete Docker Guide](DOCKER.md)** - Detailed instructions and troubleshooting.
 
 ## 🎯 Quick Start
 

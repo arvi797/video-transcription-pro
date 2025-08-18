@@ -15,15 +15,15 @@ from .formatter import TranscriptFormatter
 class VideoTranscriptionPipeline:
     """
     Complete video transcription pipeline with GPU acceleration.
-    
+
     This class combines video transcription, speaker identification, and formatting
     into a streamlined pipeline for professional video processing.
-    
+
     Attributes:
         transcriber: VideoTranscriber instance
         speaker_identifier: SpeakerIdentifier instance
         formatter: TranscriptFormatter instance
-    
+
     Example:
         >>> pipeline = VideoTranscriptionPipeline(
         ...     whisper_model="large-v3",
@@ -45,7 +45,7 @@ class VideoTranscriptionPipeline:
     ):
         """
         Initialize the video transcription pipeline.
-        
+
         Args:
             whisper_model: Whisper model name ('large-v3' recommended)
             device: Computing device ('cuda', 'cpu', or None for auto-detection)
@@ -79,16 +79,16 @@ class VideoTranscriptionPipeline:
     ) -> Dict:
         """
         Process a video file through the complete transcription pipeline.
-        
+
         Args:
             video_path: Path to input video file
             output_dir: Directory for output files (optional)
             output_formats: List of output formats ('txt', 'json', 'srt')
             cleanup_audio: Whether to delete extracted audio file after processing
-            
+
         Returns:
             Dictionary containing processing results and output file paths
-            
+
         Raises:
             FileNotFoundError: If video file doesn't exist
             Exception: If processing fails at any stage
@@ -233,12 +233,12 @@ class VideoTranscriptionPipeline:
     ) -> Dict:
         """
         Process an audio file directly (skip video extraction).
-        
+
         Args:
             audio_path: Path to input audio file
             output_dir: Directory for output files (optional)
             output_formats: List of output formats ('txt', 'json', 'srt')
-            
+
         Returns:
             Dictionary containing processing results and output file paths
         """
@@ -261,7 +261,11 @@ class VideoTranscriptionPipeline:
 
         # Use same output generation logic as process_video
         return self._generate_outputs(
-            speaker_result, whisper_result, audio_path, output_dir, output_formats,
+            speaker_result,
+            whisper_result,
+            audio_path,
+            output_dir,
+            output_formats,
         )
 
     def _generate_outputs(
@@ -366,7 +370,7 @@ class VideoTranscriptionPipeline:
     def get_info(self) -> Dict:
         """
         Get pipeline configuration information.
-        
+
         Returns:
             Dictionary with pipeline configuration and component status
         """
