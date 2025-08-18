@@ -18,7 +18,7 @@ from .batch_processor import BatchProcessor
 
 __all__ = [
     "VideoTranscriber",
-    "SpeakerIdentifier", 
+    "SpeakerIdentifier",
     "TranscriptFormatter",
     "VideoTranscriptionPipeline",
     "BatchProcessor",
