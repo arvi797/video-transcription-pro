@@ -220,6 +220,40 @@ class TestVideoTranscriptionPipeline:
         assert "transcriber" in info["components"]
         assert "speaker_identifier" in info["components"]
 
+    def test_process_audio_generates_outputs(self, tmp_path, monkeypatch):
+        """Test that processing an audio file generates transcript outputs."""
+        pipeline = VideoTranscriptionPipeline()
+
+        # Create dummy audio file
+        audio_file = tmp_path / "sample.wav"
+        audio_file.touch()
+
+        # Mock transcription and speaker identification
+        fake_whisper = {"segments": [{"start": 0.0, "end": 1.0, "text": "hi"}]}
+        fake_speaker = {
+            "segments": [{"start": 0.0, "end": 1.0, "text": "hi", "speaker": "A"}],
+            "num_speakers": 1,
+            "method": "audio_clustering",
+            "accuracy_score": 70,
+            "processing_time": 0.1,
+            "confidence": "medium",
+        }
+
+        monkeypatch.setattr(pipeline.transcriber, "transcribe", lambda path: fake_whisper)
+
+        def fake_identify(audio_path, whisper_result, num_speakers=None, method=None):
+            return fake_speaker
+
+        monkeypatch.setattr(
+            pipeline.speaker_identifier, "identify_speakers", fake_identify
+        )
+
+        result = pipeline.process_audio(str(audio_file), output_dir=tmp_path)
+
+        assert result["success"] is True
+        assert Path(result["output_files"]["txt"]).exists()
+        assert Path(result["output_files"]["json"]).exists()
+
 
 class TestBatchProcessor:
     """Test cases for BatchProcessor class."""
