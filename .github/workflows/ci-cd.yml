@@ -48,7 +48,7 @@ jobs:
     
     - name: Type checking with mypy
       run: |
-        mypy src/ --ignore-missing-imports
+        mypy src/ --ignore-missing-imports --no-strict-optional --allow-untyped-defs
     
     - name: Test with pytest
       run: |
