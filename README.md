@@ -109,10 +109,10 @@ pip install video-transcription-pro[all]
 ```
 
 ### 🔧 Platform-Specific Setup
-- **[Windows](INSTALL.md#-windows-installation)** - Conda recommended
-- **[Linux](INSTALL.md#-linux-installation)** - Native pip works well
-- **[macOS](INSTALL.md#-macos-installation)** - Similar to Linux
-- **[Docker](DOCKER.md)** - Cross-platform solution
+- **[Windows](docs/INSTALL.md#-windows-installation)** - Conda recommended
+- **[Linux](docs/INSTALL.md#-linux-installation)** - Native pip works well
+- **[macOS](docs/INSTALL.md#-macos-installation)** - Similar to Linux
+- **[Docker](docs/DOCKER.md)** - Cross-platform solution
 
 ## 🐳 Docker Usage (Simplified)
 
@@ -145,7 +145,7 @@ curl -O https://raw.githubusercontent.com/yourusername/video-transcription-pro/m
 docker-compose --profile cpu up video-transcription-cpu
 ```
 
-📖 **[Complete Docker Guide](DOCKER.md)** - Detailed instructions and troubleshooting.
+📖 **[Complete Docker Guide](docs/DOCKER.md)** - Detailed instructions and troubleshooting.
 
 ## 🎯 Quick Start
 
@@ -283,7 +283,7 @@ print(f"Processed {len(results)} videos successfully!")
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guidelines](docs/CONTRIBUTING.md) for details.
 
 ### Development Setup
 ```bash

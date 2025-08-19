@@ -1,5 +1,5 @@
 # GPU-enabled Docker image for Video Transcription Pro
-FROM nvidia/cuda:11.8-runtime-ubuntu22.04
+FROM nvidia/cuda:12.1-base-ubuntu22.04
 
 # Set working directory
 WORKDIR /app
@@ -27,7 +27,7 @@ COPY setup.py .
 COPY pyproject.toml .
 
 # Install Python dependencies with CUDA support
-RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code
