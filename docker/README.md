@@ -8,14 +8,14 @@ This directory contains Docker configurations for Video Transcription Pro.
 - **Location**: `../Dockerfile` (in project root)
 - **Type**: Multi-stage build with targets
 - **Targets**: `base`, `cpu`, `gpu-base`, `gpu`, `production`
-- **GPU Base Image**: `nvidia/cuda:12.1-devel-ubuntu20.04` (CUDA 12.1)
+- **GPU Base Image**: `nvidia/cuda:12.1.0-devel-ubuntu22.04` (CUDA 12.1.0)
 - **Features**: 
   - Security (non-root user)
   - Health checks
   - Multi-architecture support
   - Optimized layer caching
   - Production-ready
-  - Latest CUDA 12.1 support
+  - Latest CUDA 12.1.0 support with Ubuntu 22.04
 
 ### ⚠️ **Individual Dockerfiles** (Deprecated)
 - **`Dockerfile.cpu`** - CPU-only variant
