@@ -261,9 +261,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- 📧 **Email**: support@video-transcription-pro.com
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/video-transcription-pro/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/video-transcription-pro/discussions)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/arvi797/video-transcription-pro/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/arvi797/video-transcription-pro/discussions)
 - 📖 **Documentation**: [Full Documentation](https://video-transcription-pro.readthedocs.io/)
 
 ---
