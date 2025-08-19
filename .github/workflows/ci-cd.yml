@@ -39,12 +39,12 @@ jobs:
     
     - name: Lint with flake8
       run: |
-        flake8 src/ tests/ examples/ --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 src/ tests/ examples/ --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        flake8 src/ tests/ examples/ scripts/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 src/ tests/ examples/ scripts/ --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
     
     - name: Check code formatting with black
       run: |
-        black --check src/ tests/ examples/
+        black --check src/ tests/ examples/ scripts/
     
     - name: Type checking with mypy
       run: |
@@ -53,7 +53,7 @@ jobs:
     
     - name: Test with pytest
       run: |
-        pytest tests/ -v --cov=video_transcription --cov-report=xml --cov-report=term --cov-fail-under=30
+        pytest tests/ -v --cov=video_transcription --cov-report=xml --cov-report=term --cov-fail-under=35
     
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.9'
@@ -98,7 +98,7 @@ jobs:
     
     - name: Test with pytest
       run: |
-        pytest tests/ -v --cov=video_transcription --cov-report=term --cov-fail-under=30
+        pytest tests/ -v --cov=video_transcription --cov-report=term --cov-fail-under=35
 
   security:
     runs-on: ubuntu-latest
