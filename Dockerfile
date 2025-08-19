@@ -2,7 +2,7 @@
 # Supports both CPU and GPU variants across multiple architectures
 
 # Base stage with common dependencies
-FROM python:3.9-slim as base
+FROM python:3.10-slim as base
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
@@ -35,21 +35,19 @@ RUN pip install -e .[pyannote]
 # GPU variant with CUDA support
 FROM nvidia/cuda:12.1.0-devel-ubuntu22.04 as gpu-base
 
-# Install Python 3.9
+# Install Python 3.10 (default in Ubuntu 22.04)
 RUN apt-get update && apt-get install -y \
-    software-properties-common \
-    && add-apt-repository ppa:deadsnakes/ppa \
-    && apt-get update && apt-get install -y \
-    python3.9 \
-    python3.9-pip \
-    python3.9-dev \
+    python3.10 \
+    python3.10-pip \
+    python3.10-dev \
+    python3-pip \
     ffmpeg \
     git \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Create symlinks for python
-RUN ln -s /usr/bin/python3.9 /usr/bin/python && \
+RUN ln -s /usr/bin/python3.10 /usr/bin/python && \
     ln -s /usr/bin/pip3 /usr/bin/pip
 
 # Set environment variables
