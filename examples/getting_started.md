@@ -117,7 +117,7 @@ print(f"Processed {len(results)} videos")
 
 ### Recommended (GPU)
 - NVIDIA GPU with 4GB+ VRAM
-- CUDA 11.8+
+- CUDA 12.1+
 - 8GB+ RAM
 
 ## 📚 Documentation

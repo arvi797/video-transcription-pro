@@ -235,7 +235,7 @@ jobs:
     
     - name: Test Docker build
       run: |
-        docker build -f docker/Dockerfile.${{ matrix.variant }} -t test-${{ matrix.variant }} .
+        docker build --target ${{ matrix.variant }} -t test-${{ matrix.variant }} .
         echo "✅ Docker ${{ matrix.variant }} build successful"
     
     - name: Login to Docker Hub

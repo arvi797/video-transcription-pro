@@ -44,8 +44,9 @@ video-transcription-pro/
 │   └── install_gpu.py               # GPU installation helper
 │
 ├── 📁 docker/                       # Docker configuration
-│   ├── Dockerfile.cpu               # CPU-only Docker image
-│   └── Dockerfile.gpu               # GPU-enabled Docker image
+│   ├── README.md                    # Docker setup documentation
+│   ├── Dockerfile.cpu               # ⚠️ Deprecated - CPU-only Docker image
+│   └── Dockerfile.gpu               # ⚠️ Deprecated - GPU-enabled Docker image
 │
 ├── 📁 .github/                      # GitHub configuration
 │   └── 📁 workflows/                # CI/CD workflows
@@ -57,7 +58,7 @@ video-transcription-pro/
 ├── 📄 requirements.txt              # Production dependencies
 ├── 📄 requirements-dev.txt          # Development dependencies
 ├── 📄 docker-compose.yml            # Docker Compose configuration
-├── 📄 Dockerfile                    # Default Docker image
+├── 📄 Dockerfile                    # ✅ Main multi-stage Docker image
 └── 📄 .gitignore                    # Git ignore rules
 ```
 
@@ -80,8 +81,13 @@ video-transcription-pro/
 
 ### 4. **Scripts and Utilities**
 - **Installation helpers** in `scripts/`
-- **Docker configurations** in `docker/`
+- **Docker configurations** in `docker/` (see docker/README.md for details)
 - **CI/CD workflows** in `.github/workflows/`
+
+### 5. **Docker Configuration**
+- **Main Dockerfile** (root) - Multi-stage build with targets (`cpu`, `gpu`, `production`)
+- **Individual Dockerfiles** (docker/) - Deprecated, use main Dockerfile instead
+- **Docker Compose** - Production-ready orchestration
 
 ## 🔄 Migration Notes
 

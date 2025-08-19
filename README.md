@@ -216,7 +216,7 @@ print(f"Processed {len(results)} videos successfully!")
 
 ### Recommended for GPU Acceleration
 - NVIDIA GPU with 4GB+ VRAM
-- CUDA 11.8 or later
+- CUDA 12.1 or later
 - 8GB+ RAM
 - 10GB+ disk space
 

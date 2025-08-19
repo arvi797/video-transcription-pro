@@ -33,7 +33,7 @@ COPY . .
 RUN pip install -e .[pyannote]
 
 # GPU variant with CUDA support
-FROM nvidia/cuda:11.8-devel-ubuntu20.04 as gpu-base
+FROM nvidia/cuda:12.1-devel-ubuntu22.04 as gpu-base
 
 # Install Python 3.9
 RUN apt-get update && apt-get install -y \
@@ -70,7 +70,7 @@ COPY pyproject.toml setup.py ./
 
 # Install GPU-accelerated PyTorch
 RUN pip install --no-cache-dir \
-    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 COPY . .
 RUN pip install -e .[all]
