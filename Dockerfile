@@ -10,15 +10,17 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Install system dependencies
+# Install system dependencies with minimal footprint
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ffmpeg \
         git \
         curl \
+        ca-certificates \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/cache/apt/archives/*
+    && rm -rf /var/cache/apt/archives/* \
+    && rm -rf /tmp/* /var/tmp/*
 
 WORKDIR /app
 
@@ -33,7 +35,8 @@ RUN pip install --no-cache-dir \
     torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 COPY . .
-RUN pip install -e .[pyannote]
+RUN pip install -e .[pyannote] && \
+    rm -rf ~/.cache/pip/*
 
 # GPU variant with CUDA support
 FROM nvidia/cuda:12.1.0-devel-ubuntu22.04 as gpu-base
@@ -47,9 +50,11 @@ RUN apt-get update && \
         ffmpeg \
         git \
         curl \
+        ca-certificates \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/cache/apt/archives/*
+    && rm -rf /var/cache/apt/archives/* \
+    && rm -rf /tmp/* /var/tmp/*
 
 # Create symlinks for python
 RUN ln -sf /usr/bin/python3 /usr/bin/python && \
@@ -76,7 +81,8 @@ RUN pip install --no-cache-dir \
     torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 COPY . .
-RUN pip install -e .[all]
+RUN pip install -e .[all] && \
+    rm -rf ~/.cache/pip/*
 
 # Final production stage (CPU by default)
 FROM cpu as production
