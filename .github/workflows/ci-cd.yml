@@ -240,11 +240,28 @@ jobs:
       uses: docker/setup-buildx-action@v3
       with:
         platforms: linux/amd64
+        driver-opts: |
+          image=moby/buildkit:v0.12.0
     
-    - name: Test Docker build
+    - name: Check free disk space before build
       run: |
-        docker build --target ${{ matrix.variant }} -t test-${{ matrix.variant }} .
+        echo "=== Disk space before Docker build ==="
+        df -h
+        echo "=== Docker system info ==="
+        docker system df
+    
+    - name: Test Docker build with timing
+      run: |
+        echo "🚀 Starting Docker ${{ matrix.variant }} build..."
+        time docker build --target ${{ matrix.variant }} -t test-${{ matrix.variant }} .
         echo "✅ Docker ${{ matrix.variant }} build successful"
+    
+    - name: Check free disk space after build
+      run: |
+        echo "=== Disk space after Docker build ==="
+        df -h
+        echo "=== Docker system info ==="
+        docker system df
     
     - name: Login to Docker Hub
       if: github.event_name != 'pull_request'
@@ -290,6 +307,7 @@ jobs:
         cache-to: type=gha,mode=max,scope=${{ matrix.variant }}
         build-args: |
           BUILDKIT_INLINE_CACHE=1
+        outputs: type=docker,dest=/tmp/${{ matrix.variant }}-image.tar
 
   docker-manifest:
     runs-on: ubuntu-latest
@@ -342,6 +360,15 @@ jobs:
       uses: docker/setup-buildx-action@v3
       with:
         platforms: linux/amd64,linux/arm64
+        driver-opts: |
+          image=moby/buildkit:v0.12.0
+    
+    - name: Check free disk space before build
+      run: |
+        echo "=== Disk space before multi-arch Docker build ==="
+        df -h
+        echo "=== Docker system info ==="
+        docker system df
     
     - name: Login to Docker Hub
       uses: docker/login-action@v3
@@ -383,3 +410,10 @@ jobs:
         cache-to: type=gha,mode=max,scope=multiarch-${{ matrix.variant }}
         build-args: |
           BUILDKIT_INLINE_CACHE=1
+    
+    - name: Check free disk space after build
+      run: |
+        echo "=== Disk space after multi-arch Docker build ==="
+        df -h
+        echo "=== Docker system info ==="
+        docker system df
