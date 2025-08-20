@@ -1,0 +1,5 @@
+# PyTorch CPU dependencies - rarely change, good for Docker caching
+torch
+torchvision
+torchaudio
+--index-url https://download.pytorch.org/whl/cpu

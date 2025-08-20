@@ -1,4 +1,5 @@
 # Multi-stage Dockerfile for Video Transcription Pro
+# Optimized for build performance and caching
 # Supports both CPU and GPU variants across multiple architectures
 
 # Base stage with common dependencies
@@ -24,22 +25,25 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Copy requirements first for better caching
-COPY requirements.txt requirements-dev.txt ./
+# Copy only requirements first for better caching
+COPY requirements.txt requirements-dev.txt requirements-torch-cpu.txt requirements-torch-gpu.txt ./
 COPY pyproject.toml setup.py ./
 
 # CPU variant (default)
 FROM base as cpu
 
-RUN pip install --no-cache-dir \
-    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+# Install PyTorch CPU first (rarely changes)
+RUN pip install --no-cache-dir -r requirements-torch-cpu.txt
 
-COPY . .
+# Install Python dependencies (separate layer for better caching)
 RUN pip install -e .[pyannote] && \
     rm -rf ~/.cache/pip/*
 
+# Copy source code last (changes frequently)
+COPY . .
+
 # GPU variant with CUDA support
-FROM nvidia/cuda:12.1.0-devel-ubuntu22.04 as gpu-base
+FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04 as gpu-base
 
 # Install Python 3.10 (default in Ubuntu 22.04) with aggressive cleanup
 RUN apt-get update && \
@@ -72,17 +76,19 @@ WORKDIR /app
 
 FROM gpu-base as gpu
 
-# Copy requirements
-COPY requirements.txt requirements-dev.txt ./
+# Copy only requirements first for better caching
+COPY requirements.txt requirements-dev.txt requirements-torch-cpu.txt requirements-torch-gpu.txt ./
 COPY pyproject.toml setup.py ./
 
-# Install GPU-accelerated PyTorch
-RUN pip install --no-cache-dir \
-    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+# Install GPU-accelerated PyTorch first (rarely changes)
+RUN pip install --no-cache-dir -r requirements-torch-gpu.txt
 
-COPY . .
+# Install Python dependencies (separate layer for better caching)
 RUN pip install -e .[all] && \
     rm -rf ~/.cache/pip/*
+
+# Copy source code last (changes frequently)
+COPY . .
 
 # Final production stage (CPU by default)
 FROM cpu as production
