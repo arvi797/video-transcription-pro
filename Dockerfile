@@ -11,11 +11,14 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    git \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ffmpeg \
+        git \
+        curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt/archives/*
 
 WORKDIR /app
 
@@ -35,15 +38,18 @@ RUN pip install -e .[pyannote]
 # GPU variant with CUDA support
 FROM nvidia/cuda:12.1.0-devel-ubuntu22.04 as gpu-base
 
-# Install Python 3.10 (default in Ubuntu 22.04)
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    python3-dev \
-    ffmpeg \
-    git \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# Install Python 3.10 (default in Ubuntu 22.04) with aggressive cleanup
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python3 \
+        python3-pip \
+        python3-dev \
+        ffmpeg \
+        git \
+        curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt/archives/*
 
 # Create symlinks for python
 RUN ln -sf /usr/bin/python3 /usr/bin/python && \
