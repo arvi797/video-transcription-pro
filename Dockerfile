@@ -37,17 +37,16 @@ FROM nvidia/cuda:12.1.0-devel-ubuntu22.04 as gpu-base
 
 # Install Python 3.10 (default in Ubuntu 22.04)
 RUN apt-get update && apt-get install -y \
-    python3.10 \
-    python3.10-pip \
-    python3.10-dev \
+    python3 \
     python3-pip \
+    python3-dev \
     ffmpeg \
     git \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Create symlinks for python
-RUN ln -s /usr/bin/python3.10 /usr/bin/python && \
+RUN ln -s /usr/bin/python3 /usr/bin/python && \
     ln -s /usr/bin/pip3 /usr/bin/pip
 
 # Set environment variables
