@@ -6,7 +6,20 @@
 [![Downloads](https://img.shields.io/pypi/dm/video-transcription-pro.svg)](https://pypi.org/project/video-transcription-pro/)
 [![Build Status](https://github.com/yourusername/video-transcription-pro/workflows/CI/badge.svg)](https://github.com/yourusername/video-transcription-pro/actions)
 
-Professional-grade video transcription with **GPU-accelerated Whisper** and **state-of-the-art speaker diarization** using PyAnnote Audio. Achieve 95%+ speaker identification accuracy with optimal performance.
+## 🎯 Professional Video Transcription - Free & Local
+
+**Stop paying $1-3/minute for transcription services.** Get professional-grade transcription with 95%+ speaker identification accuracy - completely free and running on your own hardware.
+
+### 💡 Why Choose This?
+
+- **💰 Zero Cost** - Same quality as $60-180/hour services
+- **🔒 Privacy First** - Your data never leaves your system  
+- **⚡ GPU Accelerated** - 3-5x faster than real-time
+- **👥 Smart Speakers** - 95%+ speaker identification accuracy
+- **🎬 Multi-Format** - MP4, MKV, AVI, MOV, MP3, WAV, M4A
+- **🔄 Batch Processing** - Process entire folders at once
+
+**Perfect for:** Content creators, business meetings, research interviews, podcasts, and accessibility compliance.
 
 ## 🚀 Key Features
 
@@ -59,10 +72,10 @@ pip install video-transcription-pro[all]
 ```
 
 ### 🔧 Platform-Specific Setup
-- **[Windows](INSTALL.md#-windows-installation)** - Conda recommended
-- **[Linux](INSTALL.md#-linux-installation)** - Native pip works well
-- **[macOS](INSTALL.md#-macos-installation)** - Similar to Linux
-- **[Docker](DOCKER.md)** - Cross-platform solution
+- **[Windows](docs/INSTALL.md#-windows-installation)** - Conda recommended
+- **[Linux](docs/INSTALL.md#-linux-installation)** - Native pip works well
+- **[macOS](docs/INSTALL.md#-macos-installation)** - Similar to Linux
+- **[Docker](docs/DOCKER.md)** - Cross-platform solution
 
 ## 🐳 Docker Usage (Simplified)
 
@@ -95,7 +108,7 @@ curl -O https://raw.githubusercontent.com/yourusername/video-transcription-pro/m
 docker-compose --profile cpu up video-transcription-cpu
 ```
 
-📖 **[Complete Docker Guide](DOCKER.md)** - Detailed instructions and troubleshooting.
+📖 **[Complete Docker Guide](docs/DOCKER.md)** - Detailed instructions and troubleshooting.
 
 ## 🎯 Quick Start
 
@@ -203,7 +216,7 @@ print(f"Processed {len(results)} videos successfully!")
 
 ### Recommended for GPU Acceleration
 - NVIDIA GPU with 4GB+ VRAM
-- CUDA 11.8 or later
+- CUDA 12.1 or later
 - 8GB+ RAM
 - 10GB+ disk space
 
@@ -233,7 +246,7 @@ print(f"Processed {len(results)} videos successfully!")
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guidelines](docs/CONTRIBUTING.md) for details.
 
 ### Development Setup
 ```bash

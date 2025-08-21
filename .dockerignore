@@ -1,0 +1,116 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+CONTRIBUTING.md
+LICENSE
+*.md
+
+# Development and testing
+tests/
+test_*.py
+pytest.ini
+.coverage
+coverage.xml
+.pytest_cache/
+.tox/
+.mypy_cache/
+
+# CI/CD
+.github/
+.github/workflows/
+.github/actions/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Cache directories
+.cache/
+cache/
+
+# Local development
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Build artifacts
+*.tar
+*.tar.gz
+*.zip
+
+# Documentation build
+docs/_build/
+site/
+
+# Jupyter notebooks
+*.ipynb
+.ipynb_checkpoints/
+
+# Large media files (if any)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.wav
+*.mp3
