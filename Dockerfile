@@ -35,12 +35,12 @@ FROM base as cpu
 # Install PyTorch CPU first (rarely changes)
 RUN pip install --no-cache-dir -r requirements-torch-cpu.txt
 
+# Copy source code before installing in editable mode
+COPY . .
+
 # Install Python dependencies (separate layer for better caching)
 RUN pip install -e .[pyannote] && \
     rm -rf ~/.cache/pip/*
-
-# Copy source code last (changes frequently)
-COPY . .
 
 # GPU variant with CUDA support
 FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04 as gpu-base
@@ -83,12 +83,12 @@ COPY pyproject.toml setup.py ./
 # Install GPU-accelerated PyTorch first (rarely changes)
 RUN pip install --no-cache-dir -r requirements-torch-gpu.txt
 
+# Copy source code before installing in editable mode
+COPY . .
+
 # Install Python dependencies (separate layer for better caching)
 RUN pip install -e .[all] && \
     rm -rf ~/.cache/pip/*
-
-# Copy source code last (changes frequently)
-COPY . .
 
 # Final production stage (CPU by default)
 FROM cpu as production
