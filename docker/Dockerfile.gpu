@@ -1,5 +1,5 @@
 # GPU-enabled Docker image for Video Transcription Pro
-FROM nvidia/cuda:12.1.0-base-ubuntu22.04
+FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
 
 # Set working directory
 WORKDIR /app
@@ -34,8 +34,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ src/
 COPY test_docker.py .
 
-# Install the package
-RUN pip install -e .
+# Install the package and PyAnnote
+RUN pip install -e . && \
+    pip install pyannote.audio huggingface_hub
 
 # Create directories for input/output
 RUN mkdir -p /app/videos /app/transcripts

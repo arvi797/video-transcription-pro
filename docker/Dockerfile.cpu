@@ -27,8 +27,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ src/
 COPY test_docker.py .
 
-# Install the package
-RUN pip install -e .
+# Install the package and PyAnnote
+RUN pip install -e . && \
+    pip install pyannote.audio huggingface_hub
 
 # Create directories for input/output
 RUN mkdir -p /app/videos /app/transcripts

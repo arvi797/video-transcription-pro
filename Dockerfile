@@ -39,7 +39,8 @@ RUN pip install --no-cache-dir -r requirements-torch-cpu.txt
 COPY . .
 
 # Install Python dependencies (separate layer for better caching)
-RUN pip install -e .[pyannote] && \
+RUN pip install -e . && \
+    pip install pyannote.audio huggingface_hub && \
     rm -rf ~/.cache/pip/*
 
 # GPU variant with CUDA support
@@ -87,7 +88,8 @@ RUN pip install --no-cache-dir -r requirements-torch-gpu.txt
 COPY . .
 
 # Install Python dependencies (separate layer for better caching)
-RUN pip install -e .[all] && \
+RUN pip install -e . && \
+    pip install pyannote.audio huggingface_hub && \
     rm -rf ~/.cache/pip/*
 
 # Final production stage (CPU by default)
